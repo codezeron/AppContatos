@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.appcontatos.ui.contact.ContactsListScreen
 import com.example.appcontatos.ui.theme.AppContatosTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,34 +24,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppContatosTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                ContactsListScreen()
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier,
-        color = MaterialTheme.colorScheme.primary.copy(alpha = 50f),
-        style = MaterialTheme.typography.headlineLarge.copy(
-            fontWeight = FontWeight.Bold,
-        )
-    )
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showSystemUi = true)
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    AppContatosTheme {
-        Greeting("Android", Modifier.padding(40.dp).padding(top = 10.dp))
-    }
-}
