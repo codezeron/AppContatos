@@ -1,8 +1,10 @@
 package com.example.appcontatos.ui.contact.composables
 
+import androidx.annotation.ColorInt
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,11 +20,12 @@ import androidx.core.graphics.ColorUtils
 import com.example.appcontatos.ui.theme.AppContatosTheme
 import kotlin.math.absoluteValue
 
+@ColorInt
 private fun String.toHslColor(
     saturation: Float = 0.5f,
     lightness: Float = 0.5f
 ): Int {
-    val hue: Int = fold(0) { acc, char -> acc + acc * 37 } % 360
+    val hue: Int = fold(0) { acc, char -> char.code + acc * 37 } % 360
     return ColorUtils.HSLToColor(floatArrayOf(hue.absoluteValue.toFloat(), saturation, lightness))
 }
 
@@ -35,14 +38,14 @@ fun ContactAvatar(
     textStyle: TextStyle = MaterialTheme.typography.labelLarge
 ) {
     Box(
-        modifier = modifier,
+        modifier = modifier.size(size),
         contentAlignment = Alignment.Center,
     ) {
         val name = "$firstName $lastName".trim()
         val color = Color(name.toHslColor())
         val initials = (firstName.take(1) + lastName.take(1)).uppercase()
         Canvas(modifier = modifier.fillMaxSize()) {
-            drawCircle(SolidColor(color), radius = size.toPx() / 2)
+            drawCircle(SolidColor(color))
         }
         Text(
             text = initials,
@@ -56,10 +59,9 @@ fun ContactAvatar(
 
 @Preview(showBackground = true)
 @Composable
-fun ContactAvatarPreview(modifier: Modifier = Modifier) {
+fun ContactAvatarPreview() {
     AppContatosTheme {
         ContactAvatar(
-            modifier = modifier,
             firstName = "John",
             lastName = "Doe",
         )
