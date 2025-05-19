@@ -10,4 +10,7 @@
     <string name="favoritar">Favoritar</string>
     <string name="atualizar">Atualizar</string>
     <string name="adicionar">Adicionar</string>
+    <string name="info_do_contato">Informações do Contato</string>
+    <string name="adicionar_n_telefone">Adicionar número de telefone</string>
+    <string name="adicionar_email">Adicionar e-mail</string>
 </resources>
