@@ -27,7 +27,7 @@ class ContactsListViewModel : ViewModel() {
 
         viewModelScope.launch {
             delay(2000)
-            uiState.copy(
+            uiState = uiState.copy(
                 contacts = generateContacts().groupByInitial(),
                 isLoading = false
             )
@@ -47,7 +47,7 @@ class ContactsListViewModel : ViewModel() {
             }
             newMap[key] = newContacts
         }
-        uiState.copy(
+        uiState = uiState.copy(
             contacts = newMap.toMap()
         )
     }
