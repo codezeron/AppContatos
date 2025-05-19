@@ -5,27 +5,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CloudOff
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -34,7 +26,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -43,10 +34,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.appcontatos.R
 import com.example.appcontatos.data.Contact
+import com.example.appcontatos.data.generateContacts
 import com.example.appcontatos.data.groupByInitial
 import com.example.appcontatos.ui.contact.composables.ContactAvatar
+import com.example.appcontatos.ui.contact.composables.DefaultErrorContent
+import com.example.appcontatos.ui.contact.composables.DefaultLoadingContent
+import com.example.appcontatos.ui.contact.composables.FavoriteIconButton
 import com.example.appcontatos.ui.theme.AppContatosTheme
-import com.example.appcontatos.data.generateContacts
 
 @Composable
 fun ContactsListScreen(
@@ -55,9 +49,11 @@ fun ContactsListScreen(
 ) {
 
     if (viewModel.uiState.isLoading) {
-        LoadingContent()
+        DefaultLoadingContent(
+            text = stringResource(R.string.carregando_contatos)
+        )
     } else if (viewModel.uiState.hasError) {
-        ErrorContent(
+        DefaultErrorContent(
             onTryAgainPress = viewModel::loadContacts
         )
     } else {
@@ -138,76 +134,7 @@ fun AppBarPreview() {
     }
 }
 
-@Composable
-fun LoadingContent(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        CircularProgressIndicator(
-            color = MaterialTheme.colorScheme.primary,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant,
-            modifier = Modifier.size(60.dp)
-        )
-        Spacer(Modifier.size(8.dp))
-        Text(
-            text = stringResource(R.string.carregando_contatos),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.primary,
-        )
-    }
-}
 
-@Preview(showBackground = true, heightDp = 400)
-@Composable
-fun LoadingContentPreview() {
-    AppContatosTheme {
-        LoadingContent()
-    }
-}
-
-@Composable
-fun ErrorContent(modifier: Modifier = Modifier, onTryAgainPress: () -> Unit) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Icon(
-            imageVector = Icons.Filled.CloudOff,
-            contentDescription = stringResource(R.string.erro_ao_carregar),
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = modifier.size(80.dp)
-        )
-        Text(
-            text = stringResource(R.string.erro_ao_carregar),
-            modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.primary,
-        )
-        Text(
-            text = stringResource(R.string.aguarde_um_momento_e_tente_novamente),
-            modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp),
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.primary,
-        )
-        ElevatedButton(
-            onClick = onTryAgainPress,
-            modifier = Modifier.padding(top = 16.dp),
-        ) {
-            Text(stringResource(R.string.tentar_novamente))
-        }
-    }
-}
-
-@Preview(showBackground = true, heightDp = 400)
-@Composable
-fun ErrorContentPreview() {
-    AppContatosTheme {
-        ErrorContent(onTryAgainPress = {})
-    }
-}
 
 @Composable
 fun EmptyList(modifier: Modifier = Modifier) {
@@ -305,25 +232,10 @@ fun ContactListItem(
             )
         },
         trailingContent = {
-            IconButton(
-                onClick = {
-                    onFavoritePressed(contact)
-                }
-            ) {
-                Icon(
-                    imageVector = if (contact.isFavorite) {
-                        Icons.Filled.Favorite
-                    } else {
-                        Icons.Filled.FavoriteBorder
-                    },
-                    contentDescription = stringResource(R.string.favoritar),
-                    tint = if (contact.isFavorite) {
-                        Color.Red
-                    } else {
-                        LocalContentColor.current
-                    },
-                )
-            }
+            FavoriteIconButton(
+                isFavorite = contact.isFavorite,
+                onPressed = { onFavoritePressed(contact) }
+            )
         },
     )
 }
