@@ -1,4 +1,4 @@
-package com.example.appcontatos.ui.contact
+package com.example.appcontatos.ui.contact.list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -46,6 +46,7 @@ import com.example.appcontatos.data.Contact
 import com.example.appcontatos.data.groupByInitial
 import com.example.appcontatos.ui.contact.composables.ContactAvatar
 import com.example.appcontatos.ui.theme.AppContatosTheme
+import com.example.appcontatos.data.generateContacts
 
 @Composable
 fun ContactsListScreen(

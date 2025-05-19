@@ -1,4 +1,4 @@
-package com.example.appcontatos.ui.contact
+package com.example.appcontatos.ui.contact.list
 
 import com.example.appcontatos.data.Contact
 
