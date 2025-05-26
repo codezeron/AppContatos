@@ -34,7 +34,7 @@ fun DefaultErrorContent(
             imageVector = Icons.Filled.CloudOff,
             contentDescription = stringResource(R.string.erro_ao_carregar),
             tint = MaterialTheme.colorScheme.primary,
-            modifier = modifier.size(80.dp)
+            modifier = Modifier.size(80.dp)
         )
         Text(
             text = stringResource(R.string.erro_ao_carregar),

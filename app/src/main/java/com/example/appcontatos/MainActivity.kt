@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.example.appcontatos.ui.AppContacts
 import com.example.appcontatos.ui.contact.list.ContactsListScreen
 import com.example.appcontatos.ui.theme.AppContatosTheme
 
@@ -13,7 +14,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppContatosTheme {
-                ContactsListScreen()
+                AppContacts()
             }
         }
     }

@@ -14,9 +14,12 @@ import com.example.appcontatos.ui.contact.details.composables.ContactDetails
 @Composable
 fun ContactDetailsScreen(
     modifier: Modifier = Modifier,
-    viewModel: ContactDetailsViewModel = viewModel()
+    viewModel: ContactDetailsViewModel = viewModel(),
+    onBackPressed: () -> Unit,
+    onEditPressed: () -> Unit,
+    onContactDeleted: () -> Unit,
 ) {
-    val contentModifier: Modifier = Modifier.fillMaxSize()
+    val contentModifier: Modifier = modifier.fillMaxSize()
     if(viewModel.uiState.isLoading){
         DefaultLoadingContent(
             modifier = contentModifier,
@@ -32,9 +35,9 @@ fun ContactDetailsScreen(
             topBar = {
                 AppBar (
                     contact = viewModel.uiState.contact,
-                    onBackPressed = { },
+                    onBackPressed = onBackPressed,
                     onDeletePressed = { },
-                    onEditPressed = { },
+                    onEditPressed = onEditPressed,
                     onFavoritePressed = { }
                 )
             }
@@ -42,7 +45,7 @@ fun ContactDetailsScreen(
             ContactDetails(
                 modifier = Modifier.padding(innerPadding),
                 contact = viewModel.uiState.contact,
-                onContactInfoPressed = { }
+                onContactInfoPressed = onEditPressed
             )
 
         }

@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.appcontatos.data.ContactDatasource
 import kotlinx.coroutines.delay
@@ -11,12 +12,14 @@ import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 
-class ContactDetailsViewModel : ViewModel() {
+class ContactDetailsViewModel(
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
     var uiState : ContactDetailsUiState by mutableStateOf(ContactDetailsUiState())
         private set
 
     private val datasource: ContactDatasource = ContactDatasource.instance
-    private val contactId: Int = 1
+    private val contactId: Int = savedStateHandle.get<Int>("id") ?: 0
 
     init {
         loadContact()
