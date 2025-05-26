@@ -3,8 +3,11 @@ package com.example.appcontatos.ui.contact.details
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.appcontatos.ui.contact.composables.DefaultErrorContent
@@ -20,8 +23,8 @@ fun ContactDetailsScreen(
     onBackPressed: () -> Unit,
     onEditPressed: () -> Unit,
     onContactDeleted: () -> Unit,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() }
 ) {
-    val contentModifier: Modifier = modifier.fillMaxSize()
 
     LaunchedEffect(
         viewModel.uiState.contactDeleted
@@ -31,6 +34,17 @@ fun ContactDetailsScreen(
         }
     }
 
+    LaunchedEffect(
+        snackbarHostState, viewModel.uiState.hasErrorDeleting
+    ) {
+        if(viewModel.uiState.hasErrorDeleting){
+            snackbarHostState.showSnackbar(
+                message = "Não foi possível excluir o contato. Aguarde e tente novamente.",
+            )
+        }
+    }
+
+    val contentModifier: Modifier = modifier.fillMaxSize()
     if(viewModel.uiState.showConfirmationDialog){
         ConfirmationDialog(
             message = "Você tem certeza que deseja excluir este contato?",
@@ -59,7 +73,8 @@ fun ContactDetailsScreen(
                     onEditPressed = onEditPressed,
                     onFavoritePressed = viewModel::onFavoritePressed,
                 )
-            }
+            },
+            snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
         ) { innerPadding ->
             ContactDetails(
                 modifier = Modifier.padding(innerPadding),
