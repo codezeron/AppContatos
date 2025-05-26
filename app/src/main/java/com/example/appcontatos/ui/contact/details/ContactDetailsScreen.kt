@@ -4,11 +4,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.appcontatos.ui.contact.composables.DefaultErrorContent
 import com.example.appcontatos.ui.contact.composables.DefaultLoadingContent
 import com.example.appcontatos.ui.contact.details.composables.AppBar
+import com.example.appcontatos.ui.contact.details.composables.ConfirmationDialog
 import com.example.appcontatos.ui.contact.details.composables.ContactDetails
 
 @Composable
@@ -20,6 +22,22 @@ fun ContactDetailsScreen(
     onContactDeleted: () -> Unit,
 ) {
     val contentModifier: Modifier = modifier.fillMaxSize()
+
+    LaunchedEffect(
+        viewModel.uiState.contactDeleted
+    ) {
+        if(viewModel.uiState.contactDeleted) {
+            onContactDeleted()
+        }
+    }
+
+    if(viewModel.uiState.showConfirmationDialog){
+        ConfirmationDialog(
+            message = "Você tem certeza que deseja excluir este contato?",
+            onDismiss = viewModel::hideConfirmationDialog ,
+            onConfirm = viewModel::deleteContact
+        )
+    }
     if(viewModel.uiState.isLoading){
         DefaultLoadingContent(
             modifier = contentModifier,
@@ -35,17 +53,19 @@ fun ContactDetailsScreen(
             topBar = {
                 AppBar (
                     contact = viewModel.uiState.contact,
+                    isDeleting = viewModel.uiState.isDeleting,
                     onBackPressed = onBackPressed,
-                    onDeletePressed = { },
+                    onDeletePressed = viewModel::showConfirmationDialog,
                     onEditPressed = onEditPressed,
-                    onFavoritePressed = { }
+                    onFavoritePressed = viewModel::onFavoritePressed,
                 )
             }
         ) { innerPadding ->
             ContactDetails(
                 modifier = Modifier.padding(innerPadding),
                 contact = viewModel.uiState.contact,
-                onContactInfoPressed = onEditPressed
+                onContactInfoPressed = onEditPressed,
+                enabled = !viewModel.uiState.isDeleting
             )
 
         }

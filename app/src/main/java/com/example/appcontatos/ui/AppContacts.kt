@@ -42,7 +42,9 @@ fun AppContacts(
                     navController.popBackStack()
                 },
                 onEditPressed = {},
-                onContactDeleted = {}
+                onContactDeleted = {
+                    navController.popBackStack()
+                }
             )
         }
     }
