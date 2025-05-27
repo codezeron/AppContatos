@@ -35,7 +35,7 @@ fun FormContent(
     onLastNameChanged: (String) -> Unit,
     onPhoneChanged: (String) -> Unit,
     onEmailChanged: (String) -> Unit,
-    onIsFavoriteChanged: (Boolean) -> Unit,
+    onIsFavoriteChanged: (String) -> Unit,
     onBirthDateChanged: (String) -> Unit,
     onTypeChanged: (String) -> Unit,
     onSalaryChanged: (String) -> Unit,
@@ -147,7 +147,7 @@ fun FormContent(
                 label = "Favoritar",
                 value = formState.isFavorite.value.toBoolean(),
                 onValueChanged = { newValue ->
-                    onIsFavoriteChanged(newValue)
+                    onIsFavoriteChanged(newValue.toString())
                 },
                 enabled = !isSaving
             )

@@ -129,7 +129,7 @@ fun AppBar(
 
 @Preview(showBackground = true)
 @Composable
-fun AppBarPreview() {
+private fun AppBarPreview() {
     AppContatosTheme {
         AppBar(
             onRefreshPressed = {}
@@ -209,7 +209,7 @@ fun List(
 
 @Preview(showBackground = true, heightDp = 400)
 @Composable
-fun ListPreview() {
+private fun ListPreview() {
     AppContatosTheme {
         List(
             contacts = generateContacts().groupByInitial(),
