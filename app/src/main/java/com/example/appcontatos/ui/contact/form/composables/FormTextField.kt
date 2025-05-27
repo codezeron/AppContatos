@@ -1,6 +1,5 @@
 package com.example.appcontatos.ui.contact.form.composables
 
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -41,7 +40,7 @@ fun FormTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     val hasError = errorMessage.isNotBlank()
-    Column (modifier = modifier){
+    Column(modifier = modifier) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = value,
@@ -59,8 +58,9 @@ fun FormTextField(
             ),
             visualTransformation = visualTransformation,
             trailingIcon = trailingIcon,
+            enabled = enabled,
         )
-        if(hasError) {
+        if (hasError) {
             Text(
                 text = errorMessage,
                 color = MaterialTheme.colorScheme.error,
@@ -81,8 +81,8 @@ private fun FormTextFieldPreview() {
         FormTextField(
             value = name,
             label = "Nome",
-            onValueChange = {
-                newValue -> name = newValue
+            onValueChange = { newValue ->
+                name = newValue
             },
             errorMessage = errorMessage,
             trailingIcon = { Icon(imageVector = Icons.Default.Person, contentDescription = "") }
